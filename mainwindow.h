@@ -10,6 +10,7 @@
 #include <QGraphicsPolygonItem>
 #include <QGraphicsPixmapItem>
 #include "coor.h"
+#include "camera.h"
 
 namespace Ui {
 class MainWindow;
@@ -39,6 +40,7 @@ private:
     QGraphicsPolygonItem *locationMarker;
     QList<QGraphicsItem *> drawedLines;
     Coor lastKnownPosition;
+    Camera camera;
 };
 
 #endif // MAINWINDOW_H

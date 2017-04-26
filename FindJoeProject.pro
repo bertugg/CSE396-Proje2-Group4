@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       +=  multimedia multimediawidgets
 
 TARGET = FindJoeProject
 TEMPLATE = app
@@ -25,9 +23,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    coor.cpp
+    coor.cpp \
+    camera.cpp
 
 HEADERS  += mainwindow.h \
-    coor.h
+    coor.h \
+    camera.h
 
 FORMS    += mainwindow.ui
+
+INSTALLS += target
+
+QT       +=  widgets
