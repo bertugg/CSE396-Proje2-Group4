@@ -3,18 +3,17 @@
 
 #include <QCamera>
 #include <QCameraImageCapture>
+#include <QCameraViewfinder>
 #include <QMediaRecorder>
-
+#include <QtWidgets>
 #include <QMainWindow>
-
-namespace Ui { class Camera; }
 
 class Camera : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    Camera();
+    Camera(QStackedWidget *widget, QMenu *menu);
     ~Camera();
 
 private slots:
@@ -23,8 +22,11 @@ private slots:
     void displayViewfinder();
 
 private:
-    Ui::Camera *ui;
+    Camera *ui;
     QCamera *camera;
+    QStackedWidget *stackedWidget;
+    QMenu *menuDevices;
+    QCameraViewfinder *viewFinder;
 };
 
 #endif

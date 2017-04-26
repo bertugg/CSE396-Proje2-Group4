@@ -1,5 +1,5 @@
 #include "camera.h"
-//#include "ui_camera.h"
+#include "ui_mainwindow.h"
 
 #include <QCameraViewfinder>
 #include <QCameraInfo>
@@ -8,9 +8,12 @@
 
 Q_DECLARE_METATYPE(QCameraInfo)
 
-Camera::Camera()
+Camera::Camera(QStackedWidget *widget, QMenu *menu)
 {
-    //Camera devices:
+    // Set Up Local Values
+    stackedWidget = widget;
+    menuDevices = menu;
+
     QActionGroup *videoDevicesGroup = new QActionGroup(this);
     videoDevicesGroup->setExclusive(true);
     foreach (const QCameraInfo &cameraInfo, QCameraInfo::availableCameras()) {
@@ -20,7 +23,7 @@ Camera::Camera()
         if (cameraInfo == QCameraInfo::defaultCamera())
             videoDeviceAction->setChecked(true);
 
-        ui->menuDevices->addAction(videoDeviceAction);
+        menuDevices->addAction(videoDeviceAction);
     }
     setCamera(QCameraInfo::defaultCamera());
 }
@@ -33,10 +36,11 @@ Camera::~Camera()
 
 void Camera::setCamera(const QCameraInfo &cameraInfo)
 {
-    delete camera;
+//    delete camera;
 
     camera = new QCamera(cameraInfo);
-    camera->setViewfinder(ui->viewfinder);
+    viewFinder = new QCameraViewfinder(stackedWidget);
+    camera->setViewfinder(viewFinder);
     camera->start();
 }
 
@@ -47,5 +51,5 @@ void Camera::setExposureCompensation(int index)
 
 void Camera::displayViewfinder()
 {
-    ui->stackedWidget->setCurrentIndex(0);
+    stackedWidget->setCurrentIndex(0);
 }

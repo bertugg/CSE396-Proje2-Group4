@@ -20,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
 
     //drawLine(Coor(0,0), Coor(100,100), blackPen); // Draw a test line
+
+    // Create Camera
+    camera = new Camera(ui->stackedWidget, ui->menuDevices);
+
 }
 
 MainWindow::~MainWindow()

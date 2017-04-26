@@ -40,7 +40,7 @@ private:
     QGraphicsPolygonItem *locationMarker;
     QList<QGraphicsItem *> drawedLines;
     Coor lastKnownPosition;
-    Camera camera;
+    Camera *camera;
 };
 
 #endif // MAINWINDOW_H
