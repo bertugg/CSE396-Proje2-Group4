@@ -75,12 +75,95 @@ p, li { white-space: pre-wrap; }
      <rect>
       <x>490</x>
       <y>10</y>
-      <width>401</width>
+      <width>400</width>
       <height>361</height>
      </rect>
     </property>
-    <widget class="QWidget" name="page"/>
-    <widget class="QWidget" name="page_2"/>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>400</width>
+      <height>361</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>400</width>
+      <height>361</height>
+     </size>
+    </property>
+    <property name="baseSize">
+     <size>
+      <width>400</width>
+      <height>360</height>
+     </size>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="page">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>361</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>361</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>400</width>
+       <height>361</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QWidget" name="page_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>360</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>360</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>400</width>
+       <height>360</height>
+      </size>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
