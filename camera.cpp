@@ -37,7 +37,7 @@ Camera::~Camera()
 void Camera::setCamera(const QCameraInfo &cameraInfo)
 {
     camera = new QCamera(cameraInfo);
-    viewFinder = new QCameraViewfinder(widget); //(stackedWidget->widget(0));
+    viewFinder = new QCameraViewfinder(widget);
     camera->setViewfinder(viewFinder);
     camera->start();
 }
