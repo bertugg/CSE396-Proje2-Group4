@@ -13,7 +13,7 @@ class Camera : public QMainWindow
     Q_OBJECT
 
 public:
-    Camera(QStackedWidget *widget, QMenu *menu);
+    Camera(QWidget *targetWidget, QMenu *menu);
     ~Camera();
 
 private slots:
@@ -24,7 +24,7 @@ private slots:
 private:
     Camera *ui;
     QCamera *camera;
-    QStackedWidget *stackedWidget;
+    QWidget *widget;
     QMenu *menuDevices;
     QCameraViewfinder *viewFinder;
 };

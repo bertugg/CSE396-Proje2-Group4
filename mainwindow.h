@@ -37,7 +37,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QGraphicsPolygonItem *locationMarker;
+    //QGraphicsPolygonItem *locationMarker;
+    QGraphicsEllipseItem *locationMarker;
     QList<QGraphicsItem *> drawedLines;
     Coor lastKnownPosition;
     Camera *camera;

@@ -8,10 +8,10 @@
 
 Q_DECLARE_METATYPE(QCameraInfo)
 
-Camera::Camera(QStackedWidget *widget, QMenu *menu)
+Camera::Camera(QWidget *targetWidget, QMenu *menu)
 {
     // Set Up Local Values
-    stackedWidget = widget;
+    widget = targetWidget;
     menuDevices = menu;
 
     QActionGroup *videoDevicesGroup = new QActionGroup(this);
@@ -36,10 +36,8 @@ Camera::~Camera()
 
 void Camera::setCamera(const QCameraInfo &cameraInfo)
 {
-//    delete camera;
-
     camera = new QCamera(cameraInfo);
-    viewFinder = new QCameraViewfinder(stackedWidget);
+    viewFinder = new QCameraViewfinder(widget); //(stackedWidget->widget(0));
     camera->setViewfinder(viewFinder);
     camera->start();
 }
@@ -51,5 +49,5 @@ void Camera::setExposureCompensation(int index)
 
 void Camera::displayViewfinder()
 {
-    stackedWidget->setCurrentIndex(0);
+    //widget->setCurrentIndex(0);
 }

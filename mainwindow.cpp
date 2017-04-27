@@ -16,14 +16,14 @@ MainWindow::MainWindow(QWidget *parent) :
     blackPen.setWidth(6);
 
     // Create a Location Marker
-    locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
+    //locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
+    locationMarker = scene -> addEllipse(QRect(-10,-10,20,20),blackPen,blueBrush);
     locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
 
     //drawLine(Coor(0,0), Coor(100,100), blackPen); // Draw a test line
 
     // Create Camera
-    camera = new Camera(ui->stackedWidget, ui->menuDevices);
-
+    camera = new Camera(ui->cameraWidget, ui->menuDevices);
 }
 
 MainWindow::~MainWindow()
