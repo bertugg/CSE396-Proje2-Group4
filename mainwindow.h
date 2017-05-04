@@ -1,3 +1,10 @@
+/*--------------- User Interface for Finding Joe ---------------
+    |  Author: Semih Bertug Benim
+    |  Created on 25.04.2017
+    |  ID: 111044073
+    |  Lecture: Project II
+ *-------------------------------------------------------------------*/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -30,12 +37,18 @@ public:
     void clearLines(); // Clear all drawed lines
     QGraphicsLineItem *drawLine(Coor &c1, Coor &c2, QPen pen); // Draw A line between 2 coordinates
     void UpdateMap(Coor currentPosition);
+    Ui::MainWindow *ui;
 
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
-    Ui::MainWindow *ui;
     QGraphicsScene *scene;
     //QGraphicsPolygonItem *locationMarker;
     QGraphicsEllipseItem *locationMarker;

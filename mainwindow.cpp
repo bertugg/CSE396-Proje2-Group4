@@ -1,3 +1,11 @@
+/*--------------- User Interface for Finding Joe ---------------
+    |  Author: Semih Bertug Benim
+    |  Created on 25.04.2017
+    |  ID: 111044073
+    |  Lecture: Project II
+ *-------------------------------------------------------------------*/
+
+#include "settings.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -7,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
+    settings::Secure(this);
     ui->graphicsView->setScene(scene);
+
 
     lastKnownPosition = Coor(-1,-1);
 
@@ -36,14 +46,18 @@ MainWindow::~MainWindow()
  */
 void MainWindow::on_pushButton_clicked()
 {
-    /*
+    DebugLog("Program Started Stub");
+    ui->pushButton_2->setEnabled(true);
+    ui->pushButton->setEnabled(false);
+/*
     DebugLog("Normal Text");
     DebugWarning("Warning Text");
     DebugError("Error Text");
-    */
-
+*/
+/*
     Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
     UpdateMap(currentPosition);
+*/
 }
 
 // Shows given text in debug panel
@@ -92,4 +106,26 @@ void MainWindow::clearLines()
         scene->removeItem(drawedLines[i]);
         scene->update();
     }
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    // Test Map Function
+    Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
+    UpdateMap(currentPosition);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    // Test Debug Panel
+    DebugLog("Normal Text");
+    DebugWarning("Warning Text");
+    DebugError("Error Text");
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    DebugLog("Program Stopped Stub");
+    ui->pushButton_2->setEnabled(false);
+    ui->pushButton->setEnabled(true);
 }
