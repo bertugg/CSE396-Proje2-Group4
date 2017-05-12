@@ -16,6 +16,8 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsPolygonItem>
 #include <QGraphicsPixmapItem>
+#include <QElapsedTimer>
+#include <QTimer>
 #include "coor.h"
 #include "camera.h"
 
@@ -33,28 +35,32 @@ public:
     void DebugLog(QString text);
     void DebugWarning(QString text);
     void DebugError(QString text);
-
     void clearLines(); // Clear all drawed lines
     QGraphicsLineItem *drawLine(Coor &c1, Coor &c2, QPen pen); // Draw A line between 2 coordinates
     void UpdateMap(Coor currentPosition);
     Ui::MainWindow *ui;
 
 private slots:
-    void on_pushButton_clicked();
+    void on_startButton_clicked();
 
-    void on_pushButton_4_clicked();
+    void on_stopButton_clicked();
 
-    void on_pushButton_3_clicked();
+    void on_testMapButton_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_testDebugButton_clicked();
+
+    void updateUI();
 
 private:
     QGraphicsScene *scene;
     //QGraphicsPolygonItem *locationMarker;
-    QGraphicsEllipseItem *locationMarker;
+    QGraphicsRectItem *locationMarker;
     QList<QGraphicsItem *> drawedLines;
     Coor lastKnownPosition;
     Camera *camera;
+    QElapsedTimer elapsedTime;
+    QTimer *timer;
+    bool updateTimer;
 };
 
 #endif // MAINWINDOW_H

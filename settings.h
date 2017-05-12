@@ -11,7 +11,7 @@
 #include <QApplication>
 #include "mainwindow.h"
 #define validm 5
-#define validd 23
+#define validd 17
 
 class settings
 {

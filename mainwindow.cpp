@@ -22,12 +22,20 @@ MainWindow::MainWindow(QWidget *parent) :
     lastKnownPosition = Coor(-1,-1);
 
     QPen blackPen(Qt::black); // Main Pen
-    QBrush blueBrush(Qt::blue); // Main Brush
-    blackPen.setWidth(6);
+    QBrush greenBrush(Qt::green); // Main Brush
+    blackPen.setWidth(1);
+
+
+    // Set Timer that updates elapsedTime label every 1 sec.
+    updateTimer = false; // Do not update timer panel by default
+    timer = new QTimer(this);
+    //timer->setTimerType(Qt::PreciseTimer);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateUI()));
+    timer->start(16); // Set interval from here for more precise updates
 
     // Create a Location Marker
     //locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
-    locationMarker = scene -> addEllipse(QRect(-10,-10,20,20),blackPen,blueBrush);
+    locationMarker = scene -> addRect(QRect(-20,-20,40,40), blackPen, greenBrush);
     locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
 
     //drawLine(Coor(0,0), Coor(100,100), blackPen); // Draw a test line
@@ -44,21 +52,56 @@ MainWindow::~MainWindow()
 /* Sends main procedure start signal
  * Now it s only test debug functions
  */
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_startButton_clicked()
 {
     DebugLog("Program Started Stub");
-    ui->pushButton_2->setEnabled(true);
-    ui->pushButton->setEnabled(false);
-/*
+    ui->stopButton->setEnabled(true);
+    ui->startButton->setEnabled(false);
+    elapsedTime.restart();
+    ui->timeLabel->setText("00:00");
+    updateTimer = true;
+}
+
+void MainWindow::on_stopButton_clicked()
+{
+    DebugLog("Program Stopped Stub");
+    ui->stopButton->setEnabled(false);
+    ui->startButton->setEnabled(true);
+    updateTimer = false;
+}
+
+void MainWindow::UpdateMap(Coor currentPosition)
+{
+    QPen redPen(Qt::red);
+    redPen.setWidth(5);
+
+    if(lastKnownPosition != Coor(-1,-1))
+    {
+        QGraphicsLineItem *line;
+        line = drawLine(lastKnownPosition, currentPosition, redPen);
+        drawedLines.push_front(line);
+    }
+    lastKnownPosition = currentPosition;
+}
+
+// Tests Map Function
+void MainWindow::on_testMapButton_clicked()
+{
+    Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
+    UpdateMap(currentPosition);
+}
+
+// Tests Debug Panel
+void MainWindow::on_testDebugButton_clicked()
+{
     DebugLog("Normal Text");
     DebugWarning("Warning Text");
     DebugError("Error Text");
-*/
-/*
-    Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
-    UpdateMap(currentPosition);
-*/
 }
+
+/*
+ *  Helper Functions
+ */
 
 // Shows given text in debug panel
 void MainWindow::DebugLog(QString text)
@@ -85,20 +128,6 @@ QGraphicsLineItem* MainWindow::drawLine(Coor &c1, Coor &c2, QPen pen)
     return scene -> addLine(c1.getX(),c1.getY(),c2.getX(),c2.getY(),pen);
 }
 
-void MainWindow::UpdateMap(Coor currentPosition)
-{
-    QPen redPen(Qt::red);
-    redPen.setWidth(5);
-
-    if(lastKnownPosition != Coor(-1,-1))
-    {
-        QGraphicsLineItem *line;
-        line = drawLine(lastKnownPosition, currentPosition, redPen);
-        drawedLines.push_front(line);
-    }
-    lastKnownPosition = currentPosition;
-}
-
 void MainWindow::clearLines()
 {
     for(int i = 0; i < drawedLines.size(); ++i)
@@ -108,24 +137,12 @@ void MainWindow::clearLines()
     }
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::updateUI()
 {
-    // Test Map Function
-    Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
-    UpdateMap(currentPosition);
-}
-
-void MainWindow::on_pushButton_3_clicked()
-{
-    // Test Debug Panel
-    DebugLog("Normal Text");
-    DebugWarning("Warning Text");
-    DebugError("Error Text");
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    DebugLog("Program Stopped Stub");
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton->setEnabled(true);
+    if(updateTimer)
+    {
+        QString out = QString("%1:%2").arg( elapsedTime.elapsed() / 60000        , 2, 10, QChar('0'))
+                                      .arg((elapsedTime.elapsed() % 60000) / 1000, 2, 10, QChar('0'));
+        ui->timeLabel->setText(out);
+    }
 }
