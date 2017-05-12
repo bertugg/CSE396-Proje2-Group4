@@ -23,6 +23,24 @@
       <height>361</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
@@ -141,6 +159,13 @@ p, li { white-space: pre-wrap; }
      <string>00:00</string>
     </property>
    </widget>
+   <zorder>graphicsView</zorder>
+   <zorder>textEdit</zorder>
+   <zorder>cameraWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>timeTitle</zorder>
+   <zorder>timeLabel</zorder>
+   <zorder>stopButton</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

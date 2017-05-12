@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QBrush greenBrush(Qt::green); // Main Brush
     blackPen.setWidth(1);
 
+    // Add Joe Asset
+    joePixmap = scene -> addPixmap(QPixmap(JOEASSETPATH));
+    joePixmap->hide(); // Hide Joe
+    joePixmap->setScale(0.2f); // May removed with the new asset
 
     // Set Timer that updates elapsedTime label every 1 sec.
     updateTimer = false; // Do not update timer panel by default
@@ -60,6 +64,8 @@ void MainWindow::on_startButton_clicked()
     elapsedTime.restart();
     ui->timeLabel->setText("00:00");
     updateTimer = true;
+
+    joePixmap->hide();
 }
 
 void MainWindow::on_stopButton_clicked()
@@ -89,6 +95,7 @@ void MainWindow::on_testMapButton_clicked()
 {
     Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
     UpdateMap(currentPosition);
+    ShowJoe(20,20,60);
 }
 
 // Tests Debug Panel
@@ -145,4 +152,12 @@ void MainWindow::updateUI()
                                       .arg((elapsedTime.elapsed() % 60000) / 1000, 2, 10, QChar('0'));
         ui->timeLabel->setText(out);
     }
+}
+
+
+void MainWindow::ShowJoe(int x, int y, float angle)
+{
+    joePixmap->setPos(x,y);
+    joePixmap->setRotation(angle);
+    joePixmap->show();
 }
