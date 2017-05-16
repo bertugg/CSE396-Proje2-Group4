@@ -18,9 +18,9 @@
 #include <QGraphicsPixmapItem>
 #include <QElapsedTimer>
 #include <QTimer>
+#include <QPainter>
 #include "coor.h"
 #include "camera.h"
-#define JOEASSETPATH "C:/Users/bertugg/Documents/QTWorkspace/CSE396-Proje2-Group4.git/joe.jpg"
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +34,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void DebugLog(QString text);
+    void DebugLog(int text);
     void DebugWarning(QString text);
     void DebugError(QString text);
     void ShowJoe(int x, int y, float angle);
@@ -64,6 +65,8 @@ private:
     QElapsedTimer elapsedTime;
     QTimer *timer;
     bool updateTimer;
+    //void drawBackground(QPainter *painter, const QRectF &rect);
+    void drawBackground();
 };
 
 #endif // MAINWINDOW_H

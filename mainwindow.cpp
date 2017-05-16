@@ -18,8 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     settings::Secure(this);
     ui->graphicsView->setScene(scene);
 
-
     lastKnownPosition = Coor(-1,-1);
+
+    // Show Grid
+    drawBackground();
 
     QPen blackPen(Qt::black); // Main Pen
     QBrush greenBrush(Qt::green); // Main Brush
@@ -46,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Create Camera
     camera = new Camera(ui->cameraWidget, ui->menuDevices);
+
 }
 
 MainWindow::~MainWindow()
@@ -95,7 +98,12 @@ void MainWindow::on_testMapButton_clicked()
 {
     Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
     UpdateMap(currentPosition);
-    ShowJoe(20,20,60);
+    ShowJoe(0,0,0);
+
+    /*
+     * QPainter *painter = new QPainter(this);
+     * drawBackground(painter, scene->sceneRect());
+    */
 }
 
 // Tests Debug Panel
@@ -114,6 +122,12 @@ void MainWindow::on_testDebugButton_clicked()
 void MainWindow::DebugLog(QString text)
 {
     ui->textEdit->append(text);
+}
+
+// Shows given int value in debug panel
+void MainWindow::DebugLog(int text)
+{
+    ui->textEdit->append(QString::number(text));
 }
 
 // Shows given warning text in debug panel as blue
@@ -161,3 +175,49 @@ void MainWindow::ShowJoe(int x, int y, float angle)
     joePixmap->setRotation(angle);
     joePixmap->show();
 }
+inline qreal round(qreal val, int step) {
+   int tmp = int(val) + step /2;
+   tmp -= tmp % step;
+   return qreal(tmp);
+}
+void MainWindow::drawBackground()
+{
+
+    QPen _bgPen;  // creates a pen for Background Grids
+
+    _bgPen.setStyle(Qt::DashDotLine);
+    _bgPen.setWidth(1);
+    _bgPen.setBrush(Qt::gray);
+    _bgPen.setCapStyle(Qt::RoundCap);
+    _bgPen.setJoinStyle(Qt::RoundJoin);
+
+    // Add the vertical lines
+    for (int x=0; x<=1000; x+=GRID_SIZE)
+        scene->addLine(x,0,x,1000, _bgPen);
+
+    // Add the horizontal lines
+    for (int y=0; y<=1000; y+=GRID_SIZE)
+        scene->addLine(0,y,1000,y, _bgPen);
+
+    // Fit the view in the scene's bounding rect
+    ui->graphicsView->fitInView(0,0,10,10,Qt::KeepAspectRatio);
+}
+
+/* Better but not working
+void MainWindow::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    qreal left = int(rect.left()) - (int(rect.left()) % GRID_SIZE);
+    qreal top = int(rect.top()) - (int(rect.top()) % GRID_SIZE);
+
+    QVarLengthArray<QLineF, 100> lines;
+
+    for (qreal x = left; x < rect.right(); x += GRID_SIZE)
+        lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+    for (qreal y = top; y < rect.bottom(); y += GRID_SIZE)
+        lines.append(QLineF(rect.left(), y, rect.right(), y));
+
+    DebugLog(lines.size());
+
+    painter->drawLines(lines.data(), lines.size());
+}
+*/

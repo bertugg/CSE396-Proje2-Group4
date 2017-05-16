@@ -12,6 +12,8 @@
 #include "mainwindow.h"
 #define validm 5
 #define validd 17
+#define JOEASSETPATH "C:/Users/bertugg/Documents/QTWorkspace/CSE396-Proje2-Group4.git/joe.jpg"
+#define GRID_SIZE 25
 
 class settings
 {
