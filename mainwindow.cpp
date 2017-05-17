@@ -36,12 +36,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     lastKnownPosition = Coor(-1,-1);
 
-    // Show Grid
-    drawBackground();
-
     QPen blackPen(Qt::black); // Main Pen
     QBrush greenBrush(Qt::green); // Main Brush
     blackPen.setWidth(1);
+
+    // Create a Location Marker
+    //locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
+    locationMarker = scene -> addRect(QRect(-20,-20,40,40), blackPen, greenBrush);
+    locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
+
+    // Show Grid
+    drawBackground();
 
     // Add Joe Asset
     joePixmap = scene -> addPixmap(QPixmap(JOEASSETPATH));
@@ -56,11 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //timer->setTimerType(Qt::PreciseTimer);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateUI()));
     timer->start(16); // Set interval from here for more precise updates
-
-    // Create a Location Marker
-    //locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
-    locationMarker = scene -> addRect(QRect(-20,-20,40,40), blackPen, greenBrush);
-    locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
 
     //drawLine(Coor(0,0), Coor(100,100), blackPen); // Draw a test line
 
@@ -94,7 +94,6 @@ void MainWindow::on_startButton_clicked()
     elapsedTime.restart();
     ui->timeLabel->setText("00:00");
     updateTimer = true;
-
     joePixmap->hide();
 }
 
@@ -125,7 +124,7 @@ void MainWindow::on_testMapButton_clicked()
 {
     Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
     UpdateMap(currentPosition);
-    ShowJoe(20,20,60);
+    ShowJoe(450,450,60);
 }
 
 // Tests Debug Panel
@@ -182,14 +181,22 @@ void MainWindow::updateUI()
                                       .arg((elapsedTime.elapsed() % 60000) / 1000, 2, 10, QChar('0'));
         ui->timeLabel->setText(out);
     }
+    /*
+    if(projectRunning)
+    {
+        updateMap(Coor(locationMarker->pos().x(), locationMarker->pos().y()));
+    }
+    */
 }
 
 
 void MainWindow::ShowJoe(int x, int y, float angle)
 {
-    joePixmap->setPos(x,y);
+    joePixmap->setPos(x/2,y/2);
     joePixmap->setRotation(angle);
     joePixmap->show();
+    QString foundMessage = QString("Joe found at [%1-%2] coordinates!").arg(QString::number(x), QString::number(x));
+    DebugLog(foundMessage);
 }
 
 inline qreal round(qreal val, int step) {
@@ -210,15 +217,15 @@ void MainWindow::drawBackground()
     _bgPen.setJoinStyle(Qt::RoundJoin);
 
     // Add the vertical lines
-    for (int x=0; x<=1000; x+=GRID_SIZE)
-        scene->addLine(x,0,x,1000, _bgPen);
+    for (int x=0; x<=405; x+=GRID_SIZE)
+        scene->addLine(x,0,x,500, _bgPen);
 
     // Add the horizontal lines
-    for (int y=0; y<=1000; y+=GRID_SIZE)
-        scene->addLine(0,y,1000,y, _bgPen);
+    for (int y=0; y<=325; y+=GRID_SIZE)
+        scene->addLine(0,y,500,y, _bgPen);
 
     // Fit the view in the scene's bounding rect
-    ui->graphicsView->fitInView(0,0,10,10,Qt::KeepAspectRatio);
+    //ui->graphicsView->fitInView(0,0,10,10,Qt::KeepAspectRatio);
 }
 
 void MainWindow::showFrame(QImage frame){
