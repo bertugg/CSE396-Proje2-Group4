@@ -42,8 +42,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Create a Location Marker
     //locationMarker = scene -> addPolygon(QPolygonF( QVector<QPointF>() << QPointF( 20, -20 ) << QPointF( 0, -20) << QPointF( 10, 20)),blackPen,blueBrush);
-    locationMarker = scene -> addRect(QRect(-20,-20,40,40), blackPen, greenBrush);
-    locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
+    locationMarker = scene -> addRect(QRect(0,0,50,40), blackPen, greenBrush);
+    //locationMarker->setFlag(QGraphicsItem::ItemIsMovable);
+    locationMarker->hide();
 
     // Show Grid
     drawBackground();
@@ -107,9 +108,9 @@ void MainWindow::on_stopButton_clicked()
 
 void MainWindow::UpdateMap(Coor currentPosition)
 {
+    locationMarker->show();
     QPen redPen(Qt::red);
     redPen.setWidth(5);
-
     if(lastKnownPosition != Coor(-1,-1))
     {
         QGraphicsLineItem *line;
@@ -218,12 +219,28 @@ void MainWindow::drawBackground()
 
     // Add the vertical lines
     for (int x=0; x<=405; x+=GRID_SIZE)
+    {
+        QGraphicsTextItem * io = new QGraphicsTextItem;
+        io->setPos(x,1);
+        io->setPlainText(QString::number(x));
+        io->setScale(0.6);
+        scene->addItem(io);
         scene->addLine(x,0,x,500, _bgPen);
-
+    }
     // Add the horizontal lines
     for (int y=0; y<=325; y+=GRID_SIZE)
-        scene->addLine(0,y,500,y, _bgPen);
+    {
 
+        if(y != 0)//Visual improvement
+        {
+            QGraphicsTextItem * io = new QGraphicsTextItem;
+            io->setPos(1,y);
+            io->setPlainText(QString::number(y));
+            io->setScale(0.6);
+            scene->addItem(io);
+        }
+        scene->addLine(0,y,500,y, _bgPen);
+    }
     // Fit the view in the scene's bounding rect
     //ui->graphicsView->fitInView(0,0,10,10,Qt::KeepAspectRatio);
 }

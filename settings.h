@@ -11,8 +11,8 @@
 #include <QApplication>
 #include "mainwindow.h"
 #define validm 5
-#define validd 17
-#define GRID_SIZE 50
+#define validd 18
+#define GRID_SIZE 25
 #define JOEASSETPATH "C:/Users/bertugg/Documents/QTWorkspace/CSE396-Proje2-Group4.git/joe.png"
 #define START_POSITION Coor(450, 450)
 class settings
