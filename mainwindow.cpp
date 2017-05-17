@@ -8,15 +8,31 @@
 #include "settings.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "string.h"
+#include "Communication.h"
+#include "iostream"
+#include <fstream>
+#include <vector>
+#include <QFile>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+    // Setup user interface.
     ui->setupUi(this);
-    scene = new QGraphicsScene(this);
+
+    // Initialize Scenes.
+    scene               = new QGraphicsScene(this);
+    frameWidgetScene    = new QGraphicsScene(this);
+
     settings::Secure(this);
+
     ui->graphicsView->setScene(scene);
+    ui->graphicsView_2->setScene(frameWidgetScene);
+    //ui->graphicsView_2->setFixedSize(size());
 
     lastKnownPosition = Coor(-1,-1);
 
@@ -29,6 +45,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Add Joe Asset
     joePixmap = scene -> addPixmap(QPixmap(JOEASSETPATH));
+    if(QPixmap(JOEASSETPATH).isNull())
+        DebugError("Joe image not found!");
     joePixmap->hide(); // Hide Joe
     joePixmap->setScale(0.2f); // May removed with the new asset
 
@@ -46,8 +64,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //drawLine(Coor(0,0), Coor(100,100), blackPen); // Draw a test line
 
-    // Create Camera
-    camera = new Camera(ui->cameraWidget, ui->menuDevices);
+    mainThread = new WorkerThread(this);
+
+    connect(mainThread,SIGNAL(threadDebugLog(QString)),     this,   SLOT(DebugLog(QString)));
+    connect(mainThread,SIGNAL(threadDebugError(QString)),   this,   SLOT(DebugError(QString)));
+    connect(mainThread,SIGNAL(threadDebugWarning(QString)), this,   SLOT(DebugWarning(QString)));
+    connect(mainThread,SIGNAL(threadclearLines()),          this,   SLOT(clearLines()));
+    connect(mainThread,SIGNAL(threadShowJoe(int,int,float)),this,   SLOT(ShowJoe(int,int,float)));
+    connect(mainThread,SIGNAL(threadUpdateMap(Coor)),       this,   SLOT(UpdateMap(Coor)));
+    connect(mainThread,SIGNAL(showImage(QImage)),this,SLOT(showFrame(QImage)));
+    mainThread->start();
+
 
 }
 
@@ -98,12 +125,7 @@ void MainWindow::on_testMapButton_clicked()
 {
     Coor currentPosition = Coor(locationMarker->pos().x(), locationMarker->pos().y());
     UpdateMap(currentPosition);
-    ShowJoe(0,0,0);
-
-    /*
-     * QPainter *painter = new QPainter(this);
-     * drawBackground(painter, scene->sceneRect());
-    */
+    ShowJoe(20,20,60);
 }
 
 // Tests Debug Panel
@@ -122,12 +144,6 @@ void MainWindow::on_testDebugButton_clicked()
 void MainWindow::DebugLog(QString text)
 {
     ui->textEdit->append(text);
-}
-
-// Shows given int value in debug panel
-void MainWindow::DebugLog(int text)
-{
-    ui->textEdit->append(QString::number(text));
 }
 
 // Shows given warning text in debug panel as blue
@@ -175,11 +191,13 @@ void MainWindow::ShowJoe(int x, int y, float angle)
     joePixmap->setRotation(angle);
     joePixmap->show();
 }
+
 inline qreal round(qreal val, int step) {
    int tmp = int(val) + step /2;
    tmp -= tmp % step;
    return qreal(tmp);
 }
+
 void MainWindow::drawBackground()
 {
 
@@ -203,21 +221,6 @@ void MainWindow::drawBackground()
     ui->graphicsView->fitInView(0,0,10,10,Qt::KeepAspectRatio);
 }
 
-/* Better but not working
-void MainWindow::drawBackground(QPainter *painter, const QRectF &rect)
-{
-    qreal left = int(rect.left()) - (int(rect.left()) % GRID_SIZE);
-    qreal top = int(rect.top()) - (int(rect.top()) % GRID_SIZE);
-
-    QVarLengthArray<QLineF, 100> lines;
-
-    for (qreal x = left; x < rect.right(); x += GRID_SIZE)
-        lines.append(QLineF(x, rect.top(), x, rect.bottom()));
-    for (qreal y = top; y < rect.bottom(); y += GRID_SIZE)
-        lines.append(QLineF(rect.left(), y, rect.right(), y));
-
-    DebugLog(lines.size());
-
-    painter->drawLines(lines.data(), lines.size());
+void MainWindow::showFrame(QImage frame){
+    frameWidgetScene->addPixmap(QPixmap::fromImage(frame.scaled(ui->graphicsView_2->size())));
 }
-*/

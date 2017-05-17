@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
+    <width>899</width>
     <height>675</height>
    </rect>
   </property>
@@ -159,20 +159,26 @@ p, li { white-space: pre-wrap; }
      <string>00:00</string>
     </property>
    </widget>
-   <zorder>graphicsView</zorder>
-   <zorder>textEdit</zorder>
-   <zorder>cameraWidget</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>timeTitle</zorder>
-   <zorder>timeLabel</zorder>
-   <zorder>stopButton</zorder>
+   <widget class="QGraphicsView" name="graphicsView_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>10</y>
+      <width>411</width>
+      <height>361</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>903</width>
+     <width>899</width>
      <height>26</height>
     </rect>
    </property>

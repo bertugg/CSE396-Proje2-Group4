@@ -18,9 +18,13 @@
 #include <QGraphicsPixmapItem>
 #include <QElapsedTimer>
 #include <QTimer>
-#include <QPainter>
 #include "coor.h"
 #include "camera.h"
+#include <QCloseEvent>
+#include "Communication.h"
+#include <QString>
+#include "workerthread.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -33,40 +37,44 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    Ui::MainWindow *ui;
+    QGraphicsLineItem *drawLine(Coor &c1, Coor &c2, QPen pen); // Draw A line between 2 coordinates
+
+public slots:
     void DebugLog(QString text);
-    void DebugLog(int text);
     void DebugWarning(QString text);
     void DebugError(QString text);
     void ShowJoe(int x, int y, float angle);
     void clearLines(); // Clear all drawed lines
-    QGraphicsLineItem *drawLine(Coor &c1, Coor &c2, QPen pen); // Draw A line between 2 coordinates
     void UpdateMap(Coor currentPosition);
-    Ui::MainWindow *ui;
+    void showFrame(QImage frame);
 
 private slots:
     void on_startButton_clicked();
-
     void on_stopButton_clicked();
-
     void on_testMapButton_clicked();
-
     void on_testDebugButton_clicked();
-
     void updateUI();
 
 private:
     QGraphicsScene *scene;
+    QGraphicsScene *frameWidgetScene;
+
     //QGraphicsPolygonItem *locationMarker;
     QGraphicsRectItem *locationMarker;
     QList<QGraphicsItem *> drawedLines;
     QGraphicsPixmapItem *joePixmap;
     Coor lastKnownPosition;
-    Camera *camera;
     QElapsedTimer elapsedTime;
     QTimer *timer;
+
     bool updateTimer;
-    //void drawBackground(QPainter *painter, const QRectF &rect);
+
     void drawBackground();
+
+    WorkerThread *mainThread;
+    bool isConnected;
+
 };
 
 #endif // MAINWINDOW_H
